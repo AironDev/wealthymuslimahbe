@@ -5,6 +5,7 @@ namespace Modules\Investment\Http\Controllers\Api;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use App\Models\User;
 
 class InvestmentController extends Controller
 {
@@ -14,18 +15,22 @@ class InvestmentController extends Controller
      */
     public function index()
     {
-        return view('investment::index');
+        if(!$user = User::find(request()->user_id) ){
+            
+            return response()->json([
+                "status" => "error",
+                "message" => "User does not exists"
+            ]);
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Investments fetched successfully",
+            "data" => $user->investments
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('investment::create');
-    }
-
+   
     /**
      * Store a newly created resource in storage.
      * @param Request $request
@@ -33,7 +38,23 @@ class InvestmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!$user = User::find($request->user_id) ){
+            
+            return response()->json([
+                "status" => "error",
+                "message" => "User does not exists"
+            ]);
+        }
+
+       $investment = $user->investments()->create([
+            "investable_cash" => $request->investable_cash
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Investment created successfully",
+            "data" => $investment
+        ]);
     }
 
     /**
@@ -43,18 +64,10 @@ class InvestmentController extends Controller
      */
     public function show($id)
     {
-        return view('investment::show');
+        //not required
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('investment::edit');
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -64,7 +77,7 @@ class InvestmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //not allowed for user
     }
 
     /**
@@ -74,6 +87,6 @@ class InvestmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //not required
     }
 }

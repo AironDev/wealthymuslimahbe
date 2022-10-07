@@ -19,8 +19,7 @@ Route::namespace('Api')->prefix('v1')->group(function() {
         USER
      */
     Route::prefix('investments')->group(function() {
-        Route::post('login', 'LoginController@login');
-        Route::post('register', 'RegisterController@register');
+        Route::post('', 'InvestmentController@store');
     });
 
 
@@ -28,8 +27,8 @@ Route::namespace('Api')->prefix('v1')->group(function() {
         ADMIN
     */
     Route::namespace('Admin')->prefix('admin')->group(function() {
-        Route::group(['middleware' => ['auth:sanctum'] ], function() {
-            Route::resource('investments', 'UserController', ['names' => 'admin.users']);
+        Route::group(['middleware' => ['api'] ], function() {
+            Route::resource('investments', 'InvestmentController', ['names' => 'admin.investments']);
         });
     });
   

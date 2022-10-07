@@ -15,7 +15,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string',
-            'dob' => 'sometime',
+            'dob' => 'sometimes',
           ];
     }
 
