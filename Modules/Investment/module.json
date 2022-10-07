@@ -1,0 +1,11 @@
+{
+    "name": "Investment",
+    "alias": "investment",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Investment\\Providers\\InvestmentServiceProvider"
+    ],
+    "files": []
+}
